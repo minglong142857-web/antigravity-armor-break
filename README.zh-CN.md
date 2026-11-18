@@ -158,3 +158,26 @@ tools/probe_gui_shape.py 2  →  GOOD 2/2  (7827 / 11057 字符)
 ### 边界
 
 `replace` 会连产品工具说明一起换掉，Agent 调工具能力变弱——单轮出码才是它擅长的。中继接管代理期间联网稳定性取决于该进程，`mitm.ps1 -Disable` 可完全复原。任何解析错误都表现为"网络问题"，排障看 `logs/mitm.jsonl` 的 `bad_request` / `handle_error` / `dump`。
+
+
+## 持续集成（需手动启用一次）
+
+工作流定义在 `ci/check.yml`，不是 `.github/workflows/`——写那个目录要求 PAT 带 `workflow` scope，
+本项目首次开源用的 token 没有该权限，GitHub 直接返回 404。启用方式：
+
+```bash
+git mv ci/check.yml .github/workflows/check.yml
+git commit -m "ci: enable workflow" && git push
+```
+
+工作流内容：`node --check`（lib / scripts）、`python -m py_compile`（relay / tools）、补丁表结构校验、`detectHost()` 冒烟。
+
+## 在受限网络里提交（本机实测可用）
+
+这台机器到 github.com 的直连被阻断，`git push` 走代理也失败（openssl 不认本地 CA、schannel 握手失败）。
+可用 `tools/gh_push.py` 走 REST API 提交：
+
+```bash
+set GH_TOKEN=ghp_xxx
+python tools/gh_push.py --repo <owner>/antigravity-armor-break README.md patches/host.json
+```
