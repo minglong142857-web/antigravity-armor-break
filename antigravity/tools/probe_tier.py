@@ -1,5 +1,5 @@
 import sys, json
-sys.path.insert(0, r"D:\文档\deepseek-harness\default-workspace\antigravity-armorbreak\tools")
+sys.path.insert(0, r"$ROOT\tools")
 import agy_api
 tok = agy_api.get_token()
 def trycall(path, bodies):

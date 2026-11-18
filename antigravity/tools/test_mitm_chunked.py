@@ -1,5 +1,5 @@
 import json, os, socket, ssl, sys
-ROOT = r"D:\文档\deepseek-harness\default-workspace\antigravity-armorbreak"
+ROOT = r"$ROOT"
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import agy_api
 TARGET = "daily-cloudcode-pa.googleapis.com"
