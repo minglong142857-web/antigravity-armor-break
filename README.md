@@ -1,4 +1,6 @@
-# dsh-armor
+# Antigravity armor-break (Antigravity 破甲)
+
+> Repo name `dsh-armor`: nine host patches for DeepSeek Harness plus the Antigravity armor-break kit.
 
 **Armor-off patch pack for DeepSeek Harness + operator-contract kit for Antigravity.**
 Declarative, idempotent, reversible. 9 host patches, 0 drift on DSH desktop `0.2.x`, verified with `node --check` on every touched file.
@@ -22,7 +24,7 @@ Declarative, idempotent, reversible. 9 host patches, 0 drift on DSH desktop `0.2
 ## Install
 
 ```bash
-git clone https://github.com/minglong142857-web/dsh-armor.git
+git clone https://github.com/minglong142857-web/antigravity-armor-break.git
 cd dsh-armor
 node scripts/apply.mjs --check     # report only
 node scripts/apply.mjs --apply     # write patches (creates <file>.armor.bak)
