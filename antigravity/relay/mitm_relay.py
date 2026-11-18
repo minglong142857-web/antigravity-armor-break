@@ -275,6 +275,75 @@ def bump_max_tokens(obj: dict, n: int) -> int:
     walk(obj)
     return hit
 
+
+
+    def _stream_once(self, tls, host, path, method, headers, obj) -> bool:
+        """边收边转给客户端；只在开头 800 字节检测到拒答时回滚重试。成功返回 True。"""
+        up = None
+        for _attempt in range(3):
+            try:
+                up, _raw = self.upstream(host)
+                break
+            except Exception:
+                time.sleep(0.4 * (_attempt + 1))
+        if up is None:
+            return False
+        try:
+            hdrs = {k: v for k, v in headers.items()
+                    if k.lower() not in ("host", "content-length", "connection", "accept-encoding",
+                                         "content-encoding", "transfer-encoding", "expect")}
+            payload = json.dumps(obj, ensure_ascii=False).encode()
+            hdrs["Host"] = host
+            hdrs["Content-Length"] = str(len(payload))
+            req = "%s %s HTTP/1.1\r\n" % (method, path) + "".join("%s: %s\r\n" % kv for kv in hdrs.items()) + "\r\n"
+            up.sendall(req.encode("latin-1") + payload)
+            hr = httplib.HTTPResponse(up, method=method)
+            hr.begin()
+            if hr.status != 200:
+                return False
+            head = "HTTP/1.1 %d %s\r\n" % (hr.status, hr.reason)
+            for k, v in hr.getheaders():
+                if k.lower() in ("transfer-encoding", "content-length", "connection", "content-encoding"):
+                    continue
+                head += "%s: %s\r\n" % (k, v)
+            head += "Transfer-Encoding: chunked\r\nConnection: close\r\n\r\n"
+            up.settimeout(240.0)
+            first = True
+            probe = b""
+            sent_header = False
+            while True:
+                try:
+                    chunk = hr.read1(8192)
+                except Exception:
+                    break
+                if not chunk:
+                    break
+                if first:
+                    probe += chunk
+                    if len(probe) < 800:
+                        continue
+                    if REFUSAL.search(probe[:400].decode("utf-8", "replace")):
+                        return False           # 让调用方回落到缓冲重试路径
+                    first = False
+                    tls.sendall(head.encode("latin-1"))
+                    sent_header = True
+                    tls.sendall(b"%x\r\n" % len(probe) + probe + b"\r\n")
+                    probe = b""
+                    continue
+                tls.sendall(b"%x\r\n" % len(chunk) + chunk + b"\r\n")
+            if not sent_header:
+                tls.sendall(head.encode("latin-1"))
+                if probe:
+                    tls.sendall(b"%x\r\n" % len(probe) + probe + b"\r\n")
+            tls.sendall(b"0\r\n\r\n")
+            self.log(kind="stream_exchange", host=host, path=path, status=200)
+            return True
+        finally:
+            try:
+                up.close()
+            except Exception:
+                pass
+
 # ---------------------------------------------------------------- 代理
 class Mitm:
     def __init__(self, cfg):
@@ -424,6 +493,13 @@ class Mitm:
                             self.log(kind="model_rewrite", path=path, **{"from": cur, "to": obj["model"]})
                     else:
                         self.log(kind="model_keep", path=path, model=cur)
+
+            if getattr(self.cfg, "stream", False) and is_gen and isinstance(obj, dict):
+                try:
+                    if self._stream_once(tls, host, path, method, headers, obj):
+                        return
+                except Exception as _e:
+                    self.log(kind="stream_error", host=host, path=path, error=str(_e))
 
             attempts = 0
             text = ""
@@ -601,6 +677,7 @@ def main():
     ap.add_argument("--fail-dir", default="")
     ap.add_argument("--out-dir", default="")
     ap.add_argument("--max-output-tokens", type=int, default=0)
+    ap.add_argument("--stream", action="store_true")
     ap.add_argument("--strip-wrappers", action="store_true")
     cfg = ap.parse_args()
     cfg.rewrite_only = set(x.strip() for x in (cfg.rewrite_only or "").split(",") if x.strip())
