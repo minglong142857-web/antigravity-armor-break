@@ -1,5 +1,7 @@
 # Antigravity armor-break (Antigravity 破甲)
 
+
+![check](https://github.com/minglong142857-web/antigravity-armor-break/actions/workflows/check.yml/badge.svg)
 > Repo name `dsh-armor`: nine host patches for DeepSeek Harness plus the Antigravity armor-break kit.
 
 **Armor-off patch pack for DeepSeek Harness + operator-contract kit for Antigravity.**
