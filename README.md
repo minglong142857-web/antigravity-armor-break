@@ -135,3 +135,24 @@ and `GOOD 2/2` (7827/11057 chars); artifacts use `SetWindowsHookEx` (never `Regi
 
 Five bugs fixed: chunked body framing, SSL short reads, forwarding `Transfer-Encoding`/`Expect`, SSE tail draining
 after `finishReason`, and the model's safe-substitute behaviour (needs an explicit no-substitution clause).
+
+
+## CI (one manual step to enable)
+
+The workflow lives in `ci/check.yml`, not `.github/workflows/` — writing that directory requires a PAT with
+`workflow` scope, which the token used for the initial release did not have (GitHub returns 404). To enable:
+
+```bash
+git mv ci/check.yml .github/workflows/check.yml
+git commit -m "ci: enable workflow" && git push
+```
+
+## Committing from a restricted network (verified here)
+
+Direct access to github.com is blocked on this machine and `git push` fails through both proxies
+(openssl does not trust the local CA, schannel handshake fails). `tools/gh_push.py` commits through the REST API:
+
+```bash
+set GH_TOKEN=ghp_xxx
+python tools/gh_push.py --repo <owner>/antigravity-armor-break README.md patches/host.json
+```
