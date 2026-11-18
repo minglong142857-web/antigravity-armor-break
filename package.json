@@ -1,7 +1,7 @@
 {
   "name": "dsh-armor",
   "version": "0.1.0",
-  "description": "Armor-off patch pack for DeepSeek Harness host modules + operator-contract kit for Antigravity: approval fail-open, escalation auto-grant, repeat-reminder off, injected-context survival. 破甲补丁包：审批放行、沙箱升级直通、重复调用守卫关闭、注入上下文保留。",
+  "description": "Antigravity 破甲 · armor-break kit (hooks + transport relay) + armor-off patch pack for DeepSeek Harness: approval fail-open, escalation auto-grant, repeat-reminder off, injected-context survival. 破甲补丁包：审批放行、沙箱升级直通、重复调用守卫关闭、注入上下文保留。",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -48,7 +48,7 @@
     },
     "install": {
       "preferred": "git",
-      "git": "https://github.com/minglong142857-web/dsh-armor.git"
+      "git": "https://github.com/minglong142857-web/antigravity-armor-break.git"
     }
   }
 }
