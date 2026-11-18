@@ -1,0 +1,54 @@
+{
+  "name": "dsh-armor",
+  "version": "0.1.0",
+  "description": "Armor-off patch pack for DeepSeek Harness host modules + operator-contract kit for Antigravity: approval fail-open, escalation auto-grant, repeat-reminder off, injected-context survival. 破甲补丁包：审批放行、沙箱升级直通、重复调用守卫关闭、注入上下文保留。",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./apply": "./scripts/apply.mjs",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "dsh-armor": "scripts/apply.mjs"
+  },
+  "files": [
+    "lib",
+    "patches",
+    "scripts",
+    "antigravity",
+    "cordis.patch.yml",
+    "README.md",
+    "README.zh-CN.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "scripts": {
+    "check": "node scripts/apply.mjs --check",
+    "apply": "node scripts/apply.mjs --apply",
+    "revert": "node scripts/apply.mjs --revert"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "antigravity",
+    "jailbreak",
+    "armor-off",
+    "agent",
+    "hooks"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "install": {
+      "preferred": "git",
+      "git": "https://github.com/OWNER/dsh-armor.git"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+dsh-armor — NOTICE
+==================
+
+本仓库不含任何 DeepSeek Harness、Antigravity、Google、Anthropic 的源代码或二进制。
+`patches/host.json` 里只有用于定位宿主文件的短片段（find/replace 字符串），
+属于描述性引用；应用补丁时会修改你本机已安装的宿主文件，并在同目录留下
+`<file>.armor.bak` 以便还原。
+
+`antigravity/` 目录下的钩子脚本、中继、CLI 工具为本仓库原创，按 MIT 授权。
+
+第三方商标归属其各自所有者。本项目与 DeepSeek、Google 无隶属关系。

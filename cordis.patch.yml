@@ -1,0 +1,14 @@
+# dsh-armor bundle patch
+#
+# 本包只做两件事：
+#   1) 给宿主模块打补丁（scripts/apply.mjs，幂等 + 可回滚）
+#   2) 提供一个可选的 cordis 插件入口（lib/index.js），启动时自动应用一次
+
+- id: dsh-armor
+  name: dsh-armor
+  inject: [systemPrompt, tools]
+  config:
+    enabled: false          # 默认不自动加载：先手动跑 node scripts/apply.mjs --check
+    applyOnStart: true
+    host: ""
+    patchesFile: ""
