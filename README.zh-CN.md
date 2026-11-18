@@ -1,5 +1,7 @@
 # Antigravity 破甲
 
+
+![check](https://github.com/minglong142857-web/antigravity-armor-break/actions/workflows/check.yml/badge.svg)
 > 仓库名 `dsh-armor`：DeepSeek Harness 9 条宿主补丁 + Antigravity 破甲工具包。
 
 **DeepSeek Harness 破甲补丁包 + Antigravity 操作者契约工具包。**
@@ -160,17 +162,15 @@ tools/probe_gui_shape.py 2  →  GOOD 2/2  (7827 / 11057 字符)
 `replace` 会连产品工具说明一起换掉，Agent 调工具能力变弱——单轮出码才是它擅长的。中继接管代理期间联网稳定性取决于该进程，`mitm.ps1 -Disable` 可完全复原。任何解析错误都表现为"网络问题"，排障看 `logs/mitm.jsonl` 的 `bad_request` / `handle_error` / `dump`。
 
 
-## 持续集成（需手动启用一次）
+## 持续集成
 
-工作流定义在 `ci/check.yml`，不是 `.github/workflows/`——写那个目录要求 PAT 带 `workflow` scope，
-本项目首次开源用的 token 没有该权限，GitHub 直接返回 404。启用方式：
+工作流：`.github/workflows/check.yml`（[运行记录](https://github.com/minglong142857-web/antigravity-armor-break/actions)）
 
-```bash
-git mv ci/check.yml .github/workflows/check.yml
-git commit -m "ci: enable workflow" && git push
-```
-
-工作流内容：`node --check`（lib / scripts）、`python -m py_compile`（relay / tools）、补丁表结构校验、`detectHost()` 冒烟。
+四项检查，首次运行已通过：
+- `node --check`：`lib/index.js`、`scripts/apply.mjs`
+- `python -m py_compile`：`relay/mitm_relay.py`、`relay/relay.py`、`tools/probe_gui_shape.py`、`tools/agy_api.py`
+- 补丁表结构校验：`patches/host.json` 每条必须含 id/file/find/replace/marker
+- `detectHost()` 冒烟
 
 ## 在受限网络里提交（本机实测可用）
 
