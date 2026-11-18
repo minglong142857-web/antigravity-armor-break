@@ -1,4 +1,6 @@
-# dsh-armor
+# Antigravity 破甲
+
+> 仓库名 `dsh-armor`：DeepSeek Harness 9 条宿主补丁 + Antigravity 破甲工具包。
 
 **DeepSeek Harness 破甲补丁包 + Antigravity 操作者契约工具包。**
 声明式、幂等、可回滚。9 条宿主补丁，在当前 DSH 桌面版（0.2.x）上 `drift=0`，每个被改文件都过了 `node --check`。
@@ -22,7 +24,7 @@
 ## 安装
 
 ```bash
-git clone https://github.com/minglong142857-web/dsh-armor.git
+git clone https://github.com/minglong142857-web/antigravity-armor-break.git
 cd dsh-armor
 node scripts/apply.mjs --check     # 只报告，不写文件
 node scripts/apply.mjs --apply     # 打补丁，首写会留 <file>.armor.bak
