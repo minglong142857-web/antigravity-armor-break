@@ -48,7 +48,7 @@
     },
     "install": {
       "preferred": "git",
-      "git": "https://github.com/OWNER/dsh-armor.git"
+      "git": "https://github.com/minglong142857-web/dsh-armor.git"
     }
   }
 }

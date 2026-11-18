@@ -22,7 +22,7 @@
 ## 安装
 
 ```bash
-git clone https://github.com/OWNER/dsh-armor.git
+git clone https://github.com/minglong142857-web/dsh-armor.git
 cd dsh-armor
 node scripts/apply.mjs --check     # 只报告，不写文件
 node scripts/apply.mjs --apply     # 打补丁，首写会留 <file>.armor.bak

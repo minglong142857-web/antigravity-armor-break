@@ -40,5 +40,5 @@ gh repo create dsh-armor --public --source . --push --description "Armor-off pat
 
 ## 推送后再做的两件事
 
-1. 把两处 `OWNER` 换成你的用户名：`package.json` 的 `dsh.install.git`、README 里的 clone 示例。
+1. 把两处 `minglong142857-web` 换成你的用户名：`package.json` 的 `dsh.install.git`、README 里的 clone 示例。
 2. 想发 npm：`npm publish --access public`（bin 已注册为 `dsh-armor`）。

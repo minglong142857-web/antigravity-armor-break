@@ -22,7 +22,7 @@ Declarative, idempotent, reversible. 9 host patches, 0 drift on DSH desktop `0.2
 ## Install
 
 ```bash
-git clone https://github.com/OWNER/dsh-armor.git
+git clone https://github.com/minglong142857-web/dsh-armor.git
 cd dsh-armor
 node scripts/apply.mjs --check     # report only
 node scripts/apply.mjs --apply     # write patches (creates <file>.armor.bak)
